@@ -32,7 +32,7 @@ type TransportUDP struct {
     localAddrRtp, localAddrRtcp *net.UDPAddr
 }
 
-// NewRtpTransportUDP creates a new RTP transport for UPD.
+// NewTransportUDP creates a new RTP transport for UPD.
 //
 // addr - The UPD socket's local IP address
 // 
@@ -73,7 +73,7 @@ func (tp *TransportUDP) SetCallUpper(upper TransportRecv) {
     tp.callUpper = upper
 }
 
-// OnRecvRtp implements the rtp.TransportRecv OnRecvRtp method.
+// OnRecvData implements the rtp.TransportRecv OnRecvRtp method.
 //
 // TransportUDP does not implement any processing because it is the lowest
 // layer and expects an upper layer to receive data.
@@ -82,7 +82,7 @@ func (tp *TransportUDP) OnRecvData(rp *DataPacket) bool {
     return false
 }
 
-// OnRecvRtcp implements the rtp.TransportRecv OnRecvRtcp method.
+// OnRecvCtrl implements the rtp.TransportRecv OnRecvRtcp method.
 //
 // TransportUDP does not implement any processing because it is the lowest
 // layer and expects an upper layer to receive data.
@@ -122,12 +122,12 @@ func (tp *TransportUDP) SetToLower(lower TransportWrite) {
     tp.toLower = lower
 }
 
-// WriteRtpTo implements the rtp.TransportWrite WriteRtpTo method.
+// WriteDataTo implements the rtp.TransportWrite WriteRtpTo method.
 func (tp *TransportUDP) WriteDataTo(rp *DataPacket, addr *Address) (n int, err error) {
     return tp.dataConn.WriteToUDP(rp.buffer[0:rp.inUse], &net.UDPAddr{addr.IpAddr, addr.DataPort, addr.Zone})
 }
 
-// WriteRtcpTo implements the rtp.TransportWrite WriteRtcpTo method.
+// WriteCtrlTo implements the rtp.TransportWrite WriteRtcpTo method.
 func (tp *TransportUDP) WriteCtrlTo(rp *CtrlPacket, addr *Address) (n int, err error) {
     return tp.ctrlConn.WriteToUDP(rp.buffer[0:rp.inUse], &net.UDPAddr{addr.IpAddr, addr.CtrlPort, addr.Zone})
 }

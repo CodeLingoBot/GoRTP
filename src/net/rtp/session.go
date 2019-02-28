@@ -184,7 +184,7 @@ func (rs *Session) RemoveRemote(index uint32) {
     delete(rs.remotes, index)
 }
 
-// NewOutputStream creates a new RTP output stream and returns its index.
+// NewSsrcStreamOut creates a new RTP output stream and returns its index.
 //
 // A RTP session may have several output streams. The first output stream (stream with index 0)
 // is the standard output stream. To use other output streams the application must use the
@@ -304,7 +304,7 @@ func (rs *Session) NewDataPacketForStream(streamIndex uint32, stamp uint32) *Dat
     return str.newDataPacket(stamp)
 }
 
-// CreateDataReceivedChan creates the data received channel and returns it to the caller.
+// CreateDataReceiveChan creates the data received channel and returns it to the caller.
 //
 // An application shall listen on this channel to get received RTP data packets.
 // If the channel is full then the RTP receiver discards the data packets.
@@ -314,7 +314,7 @@ func (rs *Session) CreateDataReceiveChan() DataReceiveChan {
     return rs.dataReceiveChan
 }
 
-// RemoveDataReceivedChan deletes the data received channel.
+// RemoveDataReceiveChan deletes the data received channel.
 //
 // The receiver discards all received packets.
 //
@@ -344,7 +344,7 @@ func (rs *Session) SsrcStreamOut() *SsrcStream {
     return rs.streamsOut[0]
 }
 
-// SsrcStreamOut gets the output stream at streamIndex.
+// SsrcStreamOutForIndex gets the output stream at streamIndex.
 //
 //   streamindex - the index of the output stream as returned by NewSsrcStreamOut
 //
